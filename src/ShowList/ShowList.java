@@ -1,6 +1,5 @@
 package ShowList;
 
-
 import Exceptions.NoSuchElementException;
 import Model.TVShow;
 
@@ -33,8 +32,6 @@ public class ShowList {
             node.show = (TVShow) node.show.clone();
             return node;
         }
-
-
 
         public ShowNode(ShowNode node) {
             ShowNode showNode;
