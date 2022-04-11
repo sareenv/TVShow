@@ -34,7 +34,8 @@ public class ShowList {
             return node;
         }
 
-        // copy constructor performs the deep copy.
+
+
         public ShowNode(ShowNode node) {
             ShowNode showNode;
             try {
@@ -54,12 +55,16 @@ public class ShowList {
         this.size = size;
     }
 
-    // creates the empty show list.
     public ShowList() {
         this.head = null;
         this.size = 0;
     }
 
+    /*
+     * Inserts the TVShow at the starting index of the list.
+     * @see TVShow
+     * @param show represents the tv show which needs to be inserted at the start of the list
+     * */
     void addToStart(TVShow show) {
         // this can not be added to the list.
         if (show != null) {
@@ -73,7 +78,7 @@ public class ShowList {
         }
     }
 
-    // utility function to print the list.
+
     void printList() {
         if (this.head == null) {
             System.out.println("List has no items to print.");
@@ -131,7 +136,12 @@ public class ShowList {
         tempShow = null;
     }
 
-
+    /*
+    * Check if the showID is present in the list.
+    * @see ShowNode
+    * @param id represents the showId of the showNode.
+    * @return boolean
+    * */
     public boolean contains(String id) {
         ShowNode currentShow = this.head;
         while (currentShow != null) {
@@ -143,7 +153,12 @@ public class ShowList {
         return false;
     }
 
-
+    /*
+     * Deletes the
+     * @see ShowNode
+     * @param index position of showNode in the list which needs to be removed
+     * @return boolean
+     * */
     public boolean deleteFromIndex(int index) {
         if (index < 0 || index >= this.size) { return false; }
         if (index == 0) {
@@ -162,6 +177,16 @@ public class ShowList {
         this.size -= 1;
     }
 
+    public void replaceAtIndex(TVShow show, int index) {
+        if (index >= this.size || index < 0) {
+            System.out.println("Operation cannot be performed as " +
+                    "invalid index is provided!");
+            return;
+        }
+        ShowNode showNode = getAtIndex(index);
+        showNode.show = show;
+    }
+
 
     public static void main(String[] args)  {
         ShowList lst = new ShowList();
@@ -178,7 +203,6 @@ public class ShowList {
         } catch (NoSuchElementException exception) {
             System.exit(1);
         }
-
         ShowNode node = lst.getAtIndex(1);
         if (node != null) { System.out.println(node.show); }
         else { System.out.println("Node is null"); }
