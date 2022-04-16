@@ -5,10 +5,25 @@ import Model.TVShow;
 
 import java.util.Objects;
 
-public class ShowList {
+/*
+*
+* */
+
+public class ShowList implements Cloneable {
 
     private ShowNode head;
     private int size;
+
+    @Override
+    public ShowList clone() {
+        try {
+            // need to change this.
+            return (ShowList) super.clone();
+        } catch (CloneNotSupportedException e) {
+            System.out.println("Clone not supported " + e.getLocalizedMessage());
+        }
+        return null;
+    }
 
     private static class ShowNode implements Cloneable {
         private TVShow show;
@@ -62,7 +77,7 @@ public class ShowList {
      * @see TVShow
      * @param show represents the tv show which needs to be inserted at the start of the list
      * */
-    void addToStart(TVShow show) {
+    public void addToStart(TVShow show) {
         // this can not be added to the list.
         if (show != null) {
             if (this.head == null) {
@@ -76,7 +91,7 @@ public class ShowList {
     }
 
 
-    void printList() {
+    public void printList() {
         if (this.head == null) {
             System.out.println("List has no items to print.");
         } else {
@@ -88,7 +103,6 @@ public class ShowList {
         }
     }
 
-    // also need to keep track of the operations
     ShowNode find(String showId) {
         ShowNode currentShow = this.head;
         int operations = 0;
@@ -104,7 +118,7 @@ public class ShowList {
         return null;
     }
 
-    ShowNode getAtIndex(int index) {
+    public ShowNode getAtIndex(int index) {
         if (index == 0) { return this.head; }
         if (index > this.size) { return null; }
         if (index < 0) { return null; }
@@ -117,8 +131,16 @@ public class ShowList {
         return currentShow;
     }
 
+    /*
+     *
+     * Inserts the show at particular index
+     * @see TVShow
+     * @param index represents the index in the tvlist.
+     * @param show represents the TVShow object.
+     * @throws NoSuchElementException
+     * */
 
-    void insertAtIndex(TVShow show, int index) throws NoSuchElementException {
+    public void insertAtIndex(TVShow show, int index) throws NoSuchElementException {
         if (index < 0 || index > this.size) { throw new IndexOutOfBoundsException(); }
         if (index == 0) { addToStart(show); return; }
         int currentIndex = 0;
@@ -134,6 +156,7 @@ public class ShowList {
     }
 
     /*
+    *
     * Check if the showID is present in the list.
     * @see ShowNode
     * @param id represents the showId of the showNode.
@@ -151,7 +174,8 @@ public class ShowList {
     }
 
     /*
-     * Deletes the
+     *
+     * Deletes the node from the index.
      * @see ShowNode
      * @param index position of showNode in the list which needs to be removed
      * @return boolean
@@ -168,6 +192,13 @@ public class ShowList {
         return true;
     }
 
+    /*
+     *
+     *  Deletes the node from the start of the linked lists.
+     * @see ShowNode
+     * @param index position of showNode in the list from the start
+     * */
+
     public void deleteFromStart() {
         if (this.size == 0) { return; }
         this.head = this.head.next;
@@ -182,27 +213,6 @@ public class ShowList {
         }
         ShowNode showNode = getAtIndex(index);
         showNode.show = show;
-    }
-
-
-    public static void main(String[] args)  {
-        ShowList lst = new ShowList();
-        TVShow show = new TVShow("123", "friends", 20.00, 21.00);
-        TVShow show2 = new TVShow("8943", "Avengers", 23.00, 21.00);
-        TVShow show3 = new TVShow("83943", "Dr.Stain", 20.00, 21.00);
-        TVShow show4 = new TVShow("as12", "Ashish Chanchlani", 32.00, 40.00);
-        lst.addToStart(show);
-        lst.addToStart(show2);
-        lst.addToStart(show3);
-        try {
-            int insertionIndex = 1;
-            lst.insertAtIndex(show4, insertionIndex);
-        } catch (NoSuchElementException exception) {
-            System.exit(1);
-        }
-        ShowNode node = lst.getAtIndex(1);
-        if (node != null) { System.out.println(node.show); }
-        else { System.out.println("Node is null"); }
     }
 
 }
