@@ -10,23 +10,12 @@ import java.util.Objects;
  * various operations added to it such as deleting from the start of the linked list,
  */
 
-public class ShowList implements Cloneable {
+public class ShowList  {
 
     private ShowNode head;
     private int size;
 
-    @Override
-    public ShowList clone() {
-        try {
-            // need to change this.
-            return (ShowList) super.clone();
-        } catch (CloneNotSupportedException e) {
-            System.out.println("Clone not supported " + e.getLocalizedMessage());
-        }
-        return null;
-    }
-
-     public static class ShowNode implements Cloneable {
+    public static class ShowNode implements Cloneable {
         private TVShow show;
         private ShowNode next;
 
@@ -35,16 +24,27 @@ public class ShowList implements Cloneable {
             this.next = null;
         }
 
+        public TVShow getShow() {
+            return show;
+        }
+
+        public ShowNode getNext() {
+            return next;
+        }
+
         public ShowNode(TVShow show, ShowNode next) {
             this.show = show;
             this.next = next;
         }
 
-        // only makes the deep copy of the current and next node.
+         @Override
+         public String toString() {
+             return "Node with show " + show;
+         }
+
         @Override
         protected Object clone() throws CloneNotSupportedException {
             ShowNode node = (ShowNode) super.clone();
-            node.next = (ShowNode) node.next.clone();
             node.show = (TVShow) node.show.clone();
             return node;
         }
@@ -73,6 +73,25 @@ public class ShowList implements Cloneable {
         this.size = 0;
     }
 
+    // copy constructor.
+    public ShowList(ShowList lst) {
+        System.out.println("Cloning the whole list from the existing list - Deep copy");
+        System.out.println("---------------------------------------------------------");
+        this.head = null;
+        this.size = lst.size;
+        ShowNode node = lst.head;
+        while (node != null) {
+            try {
+                ShowNode copyNode = (ShowNode) node.clone();
+                this.addToStart(copyNode.show);
+                node = node.next;
+            } catch (CloneNotSupportedException exception) {
+                System.out.println("Cloning of the showNode is not supported yet");
+            }
+        }
+    }
+
+
     /**
      * Inserts the TVShow at the starting index of the list.
      * @see TVShow
@@ -91,7 +110,6 @@ public class ShowList implements Cloneable {
         }
     }
 
-
     public void printList() {
         if (this.head == null) {
             System.out.println("List has no items to print.");
@@ -103,7 +121,6 @@ public class ShowList implements Cloneable {
             }
         }
     }
-
 
     /**
      * Finds the show with the specific show id.
@@ -123,7 +140,7 @@ public class ShowList implements Cloneable {
             currentShow = currentShow.next;
             operations += 1;
         }
-        System.out.println("Operations required was " + operations);
+        System.out.println("Operations required  to perform search was " + operations);
         return null;
     }
 

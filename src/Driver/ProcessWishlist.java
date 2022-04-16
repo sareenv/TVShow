@@ -102,21 +102,36 @@ public class ProcessWishlist {
         return null;
     }
 
-    private static void process() {
+    private static void process(ShowList lst) {
         try {
             List<String[]>  contents = interestsFile(intrestsPath);
             if (contents != null) {
                 String[] watching = contents.get(0);
                 String[] intrested = contents.get(1);
                 System.out.println("Watching " + Arrays.toString(watching));
-                System.out.println("Intrested in " + Arrays.toString(intrested));
+                System.out.println("Interested in " + Arrays.toString(intrested));
+                for (String interest: intrested ) {
+                    for (String watch: watching) {
+                        TVShow watchingShow = lst.find(watch).getShow();
+                        TVShow interestShow = lst.find(interest).getShow();
+                        if (watchingShow.isOnSameTime(interestShow).equals("Same time") ||
+                                watchingShow.isOnSameTime(interestShow).equals("Some overlap")) {
+                            System.out.println("User cannot watch Interested show:  "
+                                    + interestShow.getShowName() + "because overlaps or is on same " +
+                                    "time of the currently watching show " + watchingShow.getShowName() );
+
+                        } else {
+                            System.out.println("User can watch Interested show:  " + interestShow.getShowName());
+                        }
+                    }
+                }
             } else {
                 System.out.println("content is set to null");
             }
         } catch (Exception e) {
             System.out.println("Exception happened");
         } finally {
-            System.out.println("Processed the interest file");
+            System.out.println("Finished processing the interest file");
         }
     }
 
@@ -142,11 +157,21 @@ public class ProcessWishlist {
 
     public static void main(String[] args)  {
         ShowList lst1 = new ShowList();
-        ShowList lst2 = new ShowList();
         addShows("tv", lst1);
-        process();
+        ShowList lst2 = new ShowList(lst1);
+//        lst2.printList(); - just to check - done checked by even debugging.
+
+        System.out.println("Detecting the time conflict");
+        System.out.println("----------------------------");
+        process(lst2);
         Scanner snc = new Scanner(System.in);
-        performSearchOperation(lst1, snc);
+        String choice = snc.nextLine();
+        System.out.println("Do you want to search for tvShow Y/N : ");
+        if (choice.equals("y") || choice.equals("Y")) {
+            performSearchOperation(lst1, snc);
+        } else {
+            System.out.println("Thanks for using the program");
+        }
         snc.close();
     }
 }

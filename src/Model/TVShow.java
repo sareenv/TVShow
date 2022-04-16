@@ -1,7 +1,6 @@
 package Model;
 
 import Interfaces.Watchable;
-
 import java.util.InputMismatchException;
 import java.util.Objects;
 import java.util.Scanner;
@@ -21,16 +20,30 @@ public class TVShow implements Cloneable, Watchable {
 
     @Override
     public Object clone() throws CloneNotSupportedException {
-        System.out.println("Please enter the new show id");
-        Scanner snc = new Scanner(System.in);
         TVShow show;
         try {
             show = (TVShow) super.clone();
-            show.showId = snc.next();
         } catch (InputMismatchException exception) {
             throw new CloneNotSupportedException();
-        } finally {
-            snc.close();
+        }
+        return show;
+    }
+
+    // overloading.
+    public TVShow clone(String showId) {
+        TVShow show = null;
+        try {
+            show = (TVShow) this.clone();
+            System.out.println("Cloned tv show: " + show);
+            System.out.println("Please enter the new show id: ");
+            Scanner snc = new Scanner(System.in);
+            if (snc.hasNext() && !(snc.next().equals(""))) {
+                show.showId = snc.nextLine();
+            }
+        } catch (CloneNotSupportedException exception) {
+            System.out.println("Cloning is not supported! ");
+        } catch (Exception exception) {
+            System.out.println("Another exception is caused " + exception.getMessage());
         }
         return show;
     }
