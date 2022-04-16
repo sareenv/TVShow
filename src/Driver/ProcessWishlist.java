@@ -6,10 +6,7 @@ import ShowList.ShowList;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class ProcessWishlist {
     static final String basePath = System.getenv().get("PWD");
@@ -110,21 +107,39 @@ public class ProcessWishlist {
                 String[] intrested = contents.get(1);
                 System.out.println("Watching " + Arrays.toString(watching));
                 System.out.println("Interested in " + Arrays.toString(intrested));
-                for (String interest: intrested ) {
-                    for (String watch: watching) {
-                        TVShow watchingShow = lst.find(watch).getShow();
-                        TVShow interestShow = lst.find(interest).getShow();
+                HashSet<String> canWatch = new HashSet<>();
+                for (String watch: watching ) {
+                    for (String interest: intrested) {
+                        TVShow watchingShow = lst.findWithoutPrint(watch).getShow();
+                        TVShow interestShow = lst.findWithoutPrint(interest).getShow();
                         if (watchingShow.isOnSameTime(interestShow).equals("Same time") ||
                                 watchingShow.isOnSameTime(interestShow).equals("Some overlap")) {
-                            System.out.println("User cannot watch Interested show:  "
-                                    + interestShow.getShowName() + "because overlaps or is on same " +
-                                    "time of the currently watching show " + watchingShow.getShowName() );
-
+                            String content = "User cannot watch Interested show:  "
+                                    + interestShow.getShowName() + " " +
+                                    " Reason: Because overlaps or is on same " +
+                                    "time of the currently watching show " +
+                                    watchingShow.getShowName() + "\n" + "Watching Show Start Time: "
+                                    + watchingShow.getStartTime() + "\n"
+                                    + "Watching Show End Time: "  + watchingShow.getEndTime() + "\n"
+                                    + "Interested Show: " + watchingShow.getStartTime() + "\n"
+                                    + "Interested Show End Time: "  + watchingShow.getEndTime();
+                            canWatch.add(content);
                         } else {
-                            System.out.println("User can watch Interested show:  " + interestShow.getShowName());
+                            System.out.println("-----------------------------------");
+                            System.out.println("User can watch Interested show:  " + "\n" +
+                                    interestShow.getShowName() + "No time conflict with currently watching show "
+                                    + watchingShow.getShowName());
+                            System.out.println("-----------------------------------");
                         }
                     }
                 }
+
+                for (String watch: canWatch) {
+                    System.out.println("-------------------");
+                    System.out.println(watch);
+                    System.out.println("-------------------");
+                }
+
             } else {
                 System.out.println("content is set to null");
             }
@@ -144,12 +159,13 @@ public class ProcessWishlist {
             String showId = snc.next();
             if (showId.equals("-1")) {
                 isShowing = false;
+                System.out.println("Terminating the program, NOTE: Thanks for using the system ");
             } else {
                 ShowList.ShowNode node =  lst1.find(showId);
                 if (node == null) {
                     System.out.println("No tv show with the id " + showId + " is found in the system.");
                 } else {
-                    System.out.println(node);
+                    System.out.println("Found in the show in system with id " + showId);
                 }
             }
         }
@@ -165,8 +181,9 @@ public class ProcessWishlist {
         System.out.println("----------------------------");
         process(lst2);
         Scanner snc = new Scanner(System.in);
-        String choice = snc.nextLine();
         System.out.println("Do you want to search for tvShow Y/N : ");
+        String choice = snc.nextLine();
+
         if (choice.equals("y") || choice.equals("Y")) {
             performSearchOperation(lst1, snc);
         } else {

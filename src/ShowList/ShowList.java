@@ -110,6 +110,18 @@ public class ShowList  {
         }
     }
 
+    public ShowNode findWithoutPrint(String showId) {
+        ShowNode currentShow = this.head;
+        while (currentShow != null) {
+            if (Objects.equals(currentShow.show.getShowId(), showId)) {
+
+                return currentShow;
+            }
+            currentShow = currentShow.next;
+        }
+        return null;
+    }
+
     public void printList() {
         if (this.head == null) {
             System.out.println("List has no items to print.");
@@ -144,6 +156,13 @@ public class ShowList  {
         return null;
     }
 
+    /* PRIVACY LEAK.
+    *  - This method can potentially cause the privacy leak as the show pointer is exposed if
+    * someone gets the hold of the pointer then - they can manipulate the whole list like node.next = null
+    * or over expose the contents of rest of the linked list - This method was implemented as the helper method and to ease
+    * the implementation process, and reduce the code quantity for each of the methods which depends on it. However, this can
+    * lead to some serious security concerns in the software program if manipulated with correct tools.
+    * */
     public ShowNode getAtIndex(int index) {
         if (index == 0) { return this.head; }
         if (index > this.size) { return null; }
@@ -183,7 +202,7 @@ public class ShowList  {
     * Check if the showID is present in the list.
     * @see ShowNode
     * @param id represents the showId of the showNode.
-    * @return boolean
+    * @return boolean - true if the show is contained in the list, false otherwise
     * */
 
     public boolean contains(String id) {
