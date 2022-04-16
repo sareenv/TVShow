@@ -66,7 +66,7 @@ public class ProcessWishlist {
         }
     }
 
-    private static String interestsFile(String location) {
+    private static List<String[]> interestsFile(String location) {
         StringBuilder contents = new StringBuilder();
         try {
             FileInputStream inputStream = new FileInputStream(location);
@@ -76,45 +76,77 @@ public class ProcessWishlist {
                 contents.append(line);
                 contents.append(" ");
             }
-            return contents.toString();
+            String content = contents.toString();
+            String[] contentList = content.split("Wishlist");
+            List<String[]> finalContent = new ArrayList<>();
+            for (String lstElement: contentList) {
+                String val = lstElement.replace("Watching", "");
+                val = val.replace(" ", ",");
+                String[] innerLst = val.split(",");
+                // remove the first empty element from the list.
+                String[] innerListFinal = new String[innerLst.length - 1];
+                int k = 0;
+                for(String member: innerLst) {
+                    if (!member.isEmpty()) {
+                        innerListFinal[k] = member;
+                        k++;
+                    }
+                }
+                finalContent.add(innerListFinal);
+            }
+
+            return finalContent;
         } catch (FileNotFoundException exception) {
             System.out.println("File location is not found in the system. ");
         }
         return null;
     }
 
+    private static void process() {
+        try {
+            List<String[]>  contents = interestsFile(intrestsPath);
+            if (contents != null) {
+                String[] watching = contents.get(0);
+                String[] intrested = contents.get(1);
+                System.out.println("Watching " + Arrays.toString(watching));
+                System.out.println("Intrested in " + Arrays.toString(intrested));
+            } else {
+                System.out.println("content is set to null");
+            }
+        } catch (Exception e) {
+            System.out.println("Exception happened");
+        } finally {
+            System.out.println("Processed the interest file");
+        }
+    }
+
+    private static void performSearchOperation(ShowList lst1, Scanner snc) {
+        boolean isShowing = true;
+        System.out.println("To exit the search press -1 on the keyboard");
+
+        while (isShowing) {
+            System.out.println("Enter the show ID");
+            String showId = snc.next();
+            if (showId.equals("-1")) {
+                isShowing = false;
+            } else {
+                ShowList.ShowNode node =  lst1.find(showId);
+                if (node == null) {
+                    System.out.println("No tv show with the id " + showId + " is found in the system.");
+                } else {
+                    System.out.println(node);
+                }
+            }
+        }
+    }
+
     public static void main(String[] args)  {
         ShowList lst1 = new ShowList();
         ShowList lst2 = new ShowList();
         addShows("tv", lst1);
-
-        try {
-            String content = interestsFile(intrestsPath);
-            List<String[]> contents = new ArrayList<>();
-            if (content != null){
-                String[] contentList = content.split("Wishlist");
-                for (String lstElement: contentList) {
-                    String val = lstElement.replace("Watching", "");
-                    val = val.replace(" ", ",");
-                    String[] innerLst = val.split(",");
-                    // remove the first empty element from the list.
-                    String[] innerListFinal = new String[innerLst.length - 1];
-                    int k = 0;
-                    for(String member: innerLst) {
-                        if (!member.isEmpty()) {
-                            innerListFinal[k] = member;
-                            k++;
-                        }
-                    }
-                    contents.add(innerListFinal);
-                }
-            }
-            String[] watching = contents.get(0);
-            String[] intrested = contents.get(1);
-            System.out.println("Watching " + Arrays.toString(watching));
-            System.out.println("Intrested in " + Arrays.toString(intrested));
-        } catch (Exception e) {
-            System.out.println("Exception happened");
-        }
+        process();
+        Scanner snc = new Scanner(System.in);
+        performSearchOperation(lst1, snc);
+        snc.close();
     }
 }

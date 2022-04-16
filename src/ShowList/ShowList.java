@@ -5,9 +5,10 @@ import Model.TVShow;
 
 import java.util.Objects;
 
-/*
-*
-* */
+/**
+ * ShowList class is an implementation of the linked list with custom functionality of handling the tv shows with
+ * various operations added to it such as deleting from the start of the linked list,
+ */
 
 public class ShowList implements Cloneable {
 
@@ -25,7 +26,7 @@ public class ShowList implements Cloneable {
         return null;
     }
 
-    private static class ShowNode implements Cloneable {
+     public static class ShowNode implements Cloneable {
         private TVShow show;
         private ShowNode next;
 
@@ -72,7 +73,7 @@ public class ShowList implements Cloneable {
         this.size = 0;
     }
 
-    /*
+    /**
      * Inserts the TVShow at the starting index of the list.
      * @see TVShow
      * @param show represents the tv show which needs to be inserted at the start of the list
@@ -103,7 +104,15 @@ public class ShowList implements Cloneable {
         }
     }
 
-    ShowNode find(String showId) {
+
+    /**
+     * Finds the show with the specific show id.
+     * @param showId - represents the showID for the search in the linked list.
+     * @return ShowNode - returns the specific object which contains the relevant
+     * information to the show with the mentioned id.
+     */
+
+    public ShowNode find(String showId) {
         ShowNode currentShow = this.head;
         int operations = 0;
         while (currentShow != null) {
@@ -131,13 +140,11 @@ public class ShowList implements Cloneable {
         return currentShow;
     }
 
-    /*
-     *
+    /**
      * Inserts the show at particular index
      * @see TVShow
-     * @param index represents the index in the tvlist.
+     * @param index represents the index in the tv list.
      * @param show represents the TVShow object.
-     * @throws NoSuchElementException
      * */
 
     public void insertAtIndex(TVShow show, int index) throws NoSuchElementException {
@@ -155,13 +162,13 @@ public class ShowList implements Cloneable {
         tempShow = null;
     }
 
-    /*
-    *
+    /**
     * Check if the showID is present in the list.
     * @see ShowNode
     * @param id represents the showId of the showNode.
     * @return boolean
     * */
+
     public boolean contains(String id) {
         ShowNode currentShow = this.head;
         while (currentShow != null) {
@@ -173,13 +180,13 @@ public class ShowList implements Cloneable {
         return false;
     }
 
-    /*
-     *
+    /**
      * Deletes the node from the index.
      * @see ShowNode
      * @param index position of showNode in the list which needs to be removed
      * @return boolean
      * */
+
     public boolean deleteFromIndex(int index) {
         if (index < 0 || index >= this.size) { return false; }
         if (index == 0) {
@@ -192,18 +199,21 @@ public class ShowList implements Cloneable {
         return true;
     }
 
-    /*
-     *
-     *  Deletes the node from the start of the linked lists.
-     * @see ShowNode
-     * @param index position of showNode in the list from the start
-     * */
+    /**
+     * Deletes the node from the start of the linked lists.
+     * @see ShowNode */
 
     public void deleteFromStart() {
         if (this.size == 0) { return; }
         this.head = this.head.next;
         this.size -= 1;
     }
+
+    /**
+     * Replaces the tv show node at the specific index of the linked list.
+     * @param show - represent the content information of the new tv show object.
+     * @param index - represents the index in the tv show list at which replacement needs to be performed.
+     */
 
     public void replaceAtIndex(TVShow show, int index) {
         if (index >= this.size || index < 0) {
