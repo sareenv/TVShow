@@ -15,6 +15,10 @@ public class ShowList  {
     private ShowNode head;
     private int size;
 
+    public int getSize() {
+        return size;
+    }
+
     public static class ShowNode implements Cloneable {
         private TVShow show;
         private ShowNode next;
@@ -31,6 +35,8 @@ public class ShowList  {
         public ShowNode getNext() {
             return next;
         }
+
+
 
         public ShowNode(TVShow show, ShowNode next) {
             this.show = show;
@@ -146,13 +152,16 @@ public class ShowList  {
         int operations = 0;
         while (currentShow != null) {
             if (Objects.equals(currentShow.show.getShowId(), showId)) {
+                operations += 1;
                 System.out.println("Operations required was " + operations);
                 return currentShow;
             }
             currentShow = currentShow.next;
             operations += 1;
         }
-        System.out.println("Operations required  to perform search was " + operations);
+        operations += 1;
+        System.out.println("Operations required  to perform search was "
+                + operations);
         return null;
     }
 
