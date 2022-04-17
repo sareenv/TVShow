@@ -184,7 +184,7 @@ public class ShowList  {
      * */
 
     public void insertAtIndex(TVShow show, int index) throws NoSuchElementException {
-        if (index < 0 || index > this.size) { throw new IndexOutOfBoundsException(); }
+        if (index < 0 || index > this.size) { throw new NoSuchElementException(); }
         if (index == 0) { addToStart(show); return; }
         int currentIndex = 0;
         ShowNode currentShow = this.head;
