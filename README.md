@@ -1,4 +1,5 @@
 # COMP 6481 Assignment 3
+<img src="https://sareenv-projects.s3.amazonaws.com/images/tvshow.jpeg" style="height: 120px"/>
 The repository contains the program as per the specifications of the COMP 6481, where the linked list based linear data structure was required to be implemented with custom defination of the TVShow class encoding all the information regarding a tvshow implemented in the Java Programming language. 
 
 # Used Concepts 
