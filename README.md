@@ -6,7 +6,7 @@ The repository contains the program as per the specifications of the COMP 6481, 
 <li> Performed Unit Tests using the JUnit framework. </li>
 <li> Implemented logic for the deep copying of the objects which contains the reference to another object.</li>
 <li> Used JSDocs for automated documentation of the source code. </li>
-<li> Custom Exception classes were extended and overriden the required methods to throw more specific exception.</li>
+<li> Custom Exception classes were implemented to throw more specific exception.</li>
 <li> Identified the possible soruce of the privacy leak and purposed the alternative solution in the demostration of the project. </li>
 <li> Reading and Writing to the file system with the input streams and proper exception handling.  </li>
 
